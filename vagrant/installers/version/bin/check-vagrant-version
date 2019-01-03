@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+REPOSITORY_VERSION_FILE=/vagrant/VERSION
+INSTALLED_VERSION_FILE=/etc/kahuna-vagrant-version
+
+RESET="\e[0m"
+NORMAL="\e[21m\e[39m"
+BOLD="\e[1m"
+RESET_BOLD="\e[21m"
+DIM="\e[2m"
+RESET_DIM="\e[22m"
+
+BLUE="\e[94m"
+RED="\e[91m"
+YELLOW="\e[93m"
+GREEN="\e[92m"
+PURPLE="\e[95m"
+CYAN="\e[96m"
+GREY="\e[37m"
+WHITE="\e[97m"
+
+if [ -f $REPOSITORY_VERSION_FILE -a -f $INSTALLED_VERSION_FILE ] 
+then
+    repository_version=`cat $REPOSITORY_VERSION_FILE | dos2unix`
+    installed_version=`cat $INSTALLED_VERSION_FILE | dos2unix`
+    if [ "$repository_version" = "$installed_version" ]
+    then
+        echo -e "\nVagrant install is up to date at version $installed_version\n"
+    else
+        echo -e "\n${RED}Vagrant install is out of date (is $installed_version but should be $repository_version)${RESET}"
+        echo -e "Run ${BOLD}sudo vg-update ${repository_version}${RESET_BOLD}"
+    fi
+else
+    echo "Cannot determine version(s)"
+    exit 1
+fi

@@ -1,0 +1,14 @@
+_vg_update()
+{
+  local cur prev opts
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+  local names=$(ls /upgrades)
+  COMPREPLY=( $(compgen -W "${names}" -- ${cur}) )
+  return 0
+}
+
+complete -F _vg_update vg-update
+

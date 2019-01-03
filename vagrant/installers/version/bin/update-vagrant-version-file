@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+VERSION_FILE=/etc/kahuna-vagrant-version
+cp /vagrant/VERSION ${VERSION_FILE}
+dos2unix -q ${VERSION_FILE}
+VERSION=$(cat ${VERSION_FILE})
+
+echo "Version is now '${VERSION}'."

@@ -1,0 +1,105 @@
+# Power Meter configuration
+powerMeter:
+    kafka:
+        # The list of bootstrap servers, one string, comma separated.
+        # For instance:
+        #  bootstrapServers: localhost:9092,localhost:9093,localhost:9094
+        #
+        bootstrapServers: localhost:9092,localhost:9093,localhost:9094
+
+
+    # The gas meter topic.
+    # This topic is used to publish the gas meter's readouts.
+    gasMeterTopic: gasMeterTopic
+
+    # The electricity meter topic.
+    # This topic is used to publish the electricity meter's readouts.
+    electricityMeterTopic: electricityMeterTopic
+
+    # The electricity usage topic.
+    # This topic is used to publish the current electricity usage.
+    electricityUsageTopic: electricityUsageTopic
+
+
+    initialMeterReadouts:
+    -
+        meterName: "Kamstrup ... "
+        meterId: "some_id"
+        timestamp:  2013-05-31T23:00:00
+        electricityDayRateMeter:
+            supply: 100
+            usage: 101
+        electricityNightRateMeter:
+            supply: 102
+            usage: 103
+        gasMeter: 3392916
+
+
+    # The configured consumers.
+    # Idea is to keep this file synchronized between (over?) all consumers and producers.
+    consumers:
+        poc:
+            # Group is the name of the application to consume the stream.
+            # Change the group's number to re-retrieve old committed messages.
+            groupId: poc_group_00002
+            # ClientId is the id of the reader within the application group.
+            clientId: poc_client_00002
+            # The topic to consume.
+            topicName: ${powerMeter.gasMeterTopic}
+            # Whether the read values should be committed automatically
+            enableAutoCommit: false
+
+            # Ignored for now
+            # Commit Interval ISO-8601 (Duration d = Duration.parse("PT1H30M"))
+            commitInterval: PT6H
+
+        gasYtdUsage:
+            # Group is the name of the application to consume the stream.
+            # Change the group's number to re-retrieve old committed messages.
+            groupId: gas_ytd_00001
+            # ClientId is the id of the reader within the application group.
+            clientId: gas_ytd_client_00001
+            # The topic to consume.
+            topicName: ${powerMeter.gasMeterTopic}
+            # Whether the read values should be committed automatically
+            enableAutoCommit: false
+            # Ignored for now
+            # Commit Interval ISO-8601 (Duration d = Duration.parse("PT1H30M"))
+            commitInterval: PT6H
+
+        gasDailyUsage:
+            # Group is the name of the application to consume the stream.
+            # Change the group's number to re-retrieve old committed messages.
+            groupId: gas_daily_00001
+            # ClientId is the id of the reader within the application group.
+            clientId: gas_daily_client_00001
+            # The topic to consume.
+            topicName: ${powerMeter.gasMeterTopic}
+            # Whether the read values should be committed automatically
+            enableAutoCommit: false
+            # Ignored for now
+            # Commit Interval ISO-8601 (Duration d = Duration.parse("PT1H30M"))
+            commitInterval: PT6H
+
+    # The P1 Reader Stub configuration.
+    stub:
+        # The data file to read the output from.
+        dataFile: /Users/tapir/power-meter-2/backup/mysql/usage_log.csv
+
+        # The meter's name
+        meterName: Kamstrup ...
+
+        # The meter's id
+        meterId: some_id
+
+        # Interval in seconds
+        publishSchedule: 5
+
+logging:
+    level:
+        org.springframework: INFO
+
+        nl.hoepsch: DEBUG
+
+    pattern:
+        console: "%white(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) [%blue(%X{tx.id}) %white(%X{task.id})] %white([%thread]) %cyan(%logger:%line) - %msg%n"

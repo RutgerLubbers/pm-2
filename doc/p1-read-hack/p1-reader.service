@@ -1,0 +1,11 @@
+[Unit]
+Description=P1 Smart Meter Reader - Hack
+Documentation=
+After=network.target
+
+[Service]
+ExecStart=/opt/p1-reader-hack/p1-reader.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

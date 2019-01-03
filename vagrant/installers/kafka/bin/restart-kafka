@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+sudo service confluent-zookeeper restart
+sudo service confluent-schema-registry restart
+sudo service confluent-kafka-1 restart
+sudo service confluent-kafka-2 restart
+sudo service confluent-kafka-3 restart
+
