@@ -1,0 +1,10 @@
+bind 0.0.0.0
+port SENTINEL_PORT
+daemonize yes
+maxclients 256
+tcp-backlog 100
+loglevel notice
+logfile "/var/log/redis/SENTINEL_NAME.log"
+pidfile "/var/run/redis/SENTINEL_NAME.pid"
+
+# Clusters

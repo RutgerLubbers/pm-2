@@ -1,0 +1,14 @@
+_do_install()
+{
+  local cur prev opts
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+  local names=$(ls /installers)
+  COMPREPLY=( $(compgen -W "${names}" -- ${cur}) )
+  return 0
+}
+
+complete -F _do_install do-install
+complete -F _do_install do-update

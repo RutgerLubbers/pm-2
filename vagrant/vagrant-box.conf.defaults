@@ -1,0 +1,8 @@
+# -----------------------------------------------------------------------------
+# Define where which service will run.
+# 
+# host    = build it yourself and run on your host (outside vagrant)
+# vagrant = build it yourself and run inside vagrant
+#
+# When using host, rinetd will be listening on the server port inside vagrant
+# -----------------------------------------------------------------------------

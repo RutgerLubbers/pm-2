@@ -1,0 +1,28 @@
+
+The frontend is split in modules. In case you are not working on
+these modules, you need to install them before you can use your
+Vagrant image.
+
+You can install the following modules:
+* vfz-module-account (also known as IDM Frontend)
+* vfz-module-cobrowsing
+
+If you are a developer of one of these modules, you do not need
+to install them. You need to clone the repository and build the
+module yourself.
+
+If you are not one of the developers (or if you don't know what
+this is), install each module in your Vagrant image now (after
+you have configured your network connection in the previous step).
+
+${YELLOW}Make sure you have your hawaii.conf correctly set up,
+${YELLOW}check the module's versions!
+${YELLOW}NOTE: You must repeat this each time you wish to install a
+${YELLOW}      new version.
+
+Enter your vagrant image with :
+ $ vagrant ssh
+
+And then, for each module you wish to install:
+ $ sudo do-install vfz-module-account
+ $ sudo do-install vfz-module-cobrowsing

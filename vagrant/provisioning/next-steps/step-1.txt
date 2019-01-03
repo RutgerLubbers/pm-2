@@ -1,0 +1,26 @@
+
+Before being able to fully use the Vagrant machine,
+you must do the following:
+
+Log in to your machine after this script finishes by typing:
+ $ vagrant ssh
+
+ And then, depending on your local setup, type:
+
+ On the Vodafone corporate network:
+ $ sudo do-update build-configuration/vodafone-corporate
+
+ When using:
+ - DevLight over the internet;
+ - the QNH network (SSHgw);
+ do:
+ $ sudo do-update build-configuration/ssh-gateway
+
+ When using (PIU project)
+ - DevLight over the internet
+ - the QNH network (SSHgw);
+ do:
+ $ sudo do-update build-configuration/ssh-gateway-piu
+
+${YELLOW}You must repeat this step, each time you change your
+${YELLOW}Hawaii LDAP password.

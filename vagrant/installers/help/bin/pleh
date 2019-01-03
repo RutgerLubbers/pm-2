@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+RESET="\e[0m"
+NORMAL="\e[21m\e[39m"
+BOLD="\e[1m\e[92m"
+BLUE="\e[94m"
+RED="\e[91m"
+
+echo
+
+echo -e "${BLUE}Services${RESET}"
+echo -e "${BOLD}start-apache                                      ${RESET}Start apache"
+echo -e "${BOLD}stop-apache                                       ${RESET}Stop apache"
+echo -e "${BOLD}restart-apache                                    ${RESET}Stops and starts apache"
+
+
+echo -e "${RESET}"

@@ -1,0 +1,9 @@
+
+There are additional, optional(!) pieces of software you could
+install.
+
+${YELLOW}When in doubt, do not install them, it will only take
+${YELLOW}you time.
+
+J4Psh - Jolokia CLI interface:
+ $ sudo do-install j4psh

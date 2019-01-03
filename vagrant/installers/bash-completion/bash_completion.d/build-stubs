@@ -1,0 +1,13 @@
+_build_stubs()
+{
+  local cur prev opts
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+  local names=$(cd /opt/hawaii/workspace/kahuna-stubs; ls -d */ | awk -F/ '{ print $1 }')
+  COMPREPLY=( $(compgen -W "${names}" -- ${cur}) )
+  return 0
+}
+
+complete -F _build_stubs build-stubs
