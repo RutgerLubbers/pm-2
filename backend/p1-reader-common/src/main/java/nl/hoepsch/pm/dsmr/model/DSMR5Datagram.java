@@ -32,9 +32,9 @@ public class DSMR5Datagram {
      * @param checksum The checksum.
      * @param tags     The parsed tags.
      */
-    public DSMR5Datagram(final String datagram, final String checksum, final List<ObisTag> tags) {
+    public DSMR5Datagram(final String datagram, final int checksum, final List<ObisTag> tags) {
         this.raw = datagram;
-        this.checkSum = Integer.parseInt(checksum, 16);
+        this.checkSum = checksum;
         this.tags = tags;
     }
 

@@ -30,7 +30,8 @@ public final class DSMR5Parser {
      * @return the datagram.
      */
     public static DSMR5Datagram parse(final String raw, final String checksum) {
-        if (Integer.getInteger(checksum, 8) != calculateCrc(raw)) {
+        final int calculated = calculateCrc(raw);
+        if (Integer.parseInt(checksum, 16) != calculated) {
             throw new ChecksumMismatchError();
         }
         final List<ObisTag> tags = new ArrayList<>();
@@ -43,7 +44,7 @@ public final class DSMR5Parser {
             addParsedTags(tags, parsed);
         }
 
-        return new DSMR5Datagram(raw, checksum, tags);
+        return new DSMR5Datagram(raw, calculated, tags);
     }
 
     private static void addParsedTags(final List<ObisTag> tags, final Collection<ObisTag> parsed) {
