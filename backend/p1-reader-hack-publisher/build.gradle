@@ -1,0 +1,179 @@
+buildscript {
+    ext {
+        springBootVersion = "2.1.3.RELEASE"
+        springLoadedVersion = "1.2.8.RELEASE"
+    }
+    repositories {
+        jcenter()
+        mavenCentral()
+        mavenLocal()
+        maven { url "http://repo.spring.io/milestone" }
+        maven { url "http://repo.spring.io/plugins-release" }
+        maven { url "http://repo.spring.io/snapshot" }
+        maven { url "http://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "org.springframework:springloaded:${springLoadedVersion}"
+        classpath "com.commercehub.gradle.plugin:gradle-avro-plugin:0.15.1"
+        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.7.1"
+    }
+}
+
+group = "nl.hoepsch"
+
+version '1.0-SNAPSHOT'
+
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "org.springframework.boot"
+apply plugin: "maven"
+apply plugin: "com.commercehub.gradle.plugin.avro"
+apply plugin: 'io.spring.dependency-management'
+
+apply plugin: "checkstyle"
+apply plugin: "com.github.spotbugs"
+apply plugin: "pmd"
+
+ext {
+    javaVersion = "1.11"
+
+    jacksonVersion = "2.9.4"
+    springBootVersion = "2.1.1.RELEASE"
+
+    avroVersion = "1.8.2"
+    springKafkaVersion = "2.2.5.RELEASE"
+    kafkaVersion = "2.2.0"
+    kafkaAvroVersion = "5.0.0"
+
+    pmdToolVersion = "5.5.3"
+    jacksonVersion = "2.9.4"
+
+    mapStructVersion = "1.3.0.Final"
+
+    checkstyleVersion = '8.18'
+    sevntuChecksVersion = '1.32.0'
+
+    SpotBugsTask = com.github.spotbugs.SpotBugsTask
+}
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+
+repositories {
+    jcenter()
+    mavenCentral()
+    mavenLocal()
+    maven { url "http://repo.spring.io/milestone" }
+    maven { url "http://repo.spring.io/snapshot" }
+    maven { url "http://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+dependencies {
+//    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    compile "org.springframework.boot:spring-boot-configuration-processor"
+
+    compile 'org.yaml:snakeyaml:1.24'
+
+    // <MapStruct>
+    compile "org.mapstruct:mapstruct-jdk8:${mapStructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapStructVersion}"
+    // </MapStruct>
+
+    compile "ch.qos.logback:logback-classic:1.2.3"
+
+    compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonVersion}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
+
+    // <Kafka dependencies>
+
+    // the spring framework kafka wrapper
+    compile("org.springframework.kafka:spring-kafka:${springKafkaVersion}")
+
+    // the kafka client.
+    compile("org.apache.kafka:kafka-clients:${kafkaVersion}")
+
+    // support for streams is an optional dependency of the spring-kafka project and isn’t downloaded transitively.
+    compile("org.apache.kafka:kafka-streams:${kafkaVersion}")
+
+    // spring kafka test support.
+    testCompile("org.springframework.kafka:spring-kafka-test:${springKafkaVersion}")
+
+
+    // avro serializer to convert from Java to Avro and vice versa.
+    compile("io.confluent:kafka-avro-serializer:${kafkaAvroVersion}")
+    compile("io.confluent:kafka-streams-avro-serde:${kafkaAvroVersion}")
+    compile("org.apache.avro:avro:${avroVersion}")
+    // </Kafka dependencies>
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    compile "org.apache.commons:commons-lang3:3.9"
+
+
+    checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+    checkstyle "com.github.sevntu-checkstyle:sevntu-checks:${sevntuChecksVersion}"
+}
+
+tasks.withType(JavaCompile) {
+    options.deprecation = true
+    options.encoding = "UTF-8"
+    // add Xlint to our compiler options (but disable processing because of Spring warnings in code)
+    // and make warnings be treated like errors
+    options.compilerArgs += ["-Xlint:all", "-Xlint:-processing", "-Werror"]
+}
+
+compileJava {
+    dependsOn processResources
+    options.compilerArgs = [
+        '-Amapstruct.defaultComponentModel=spring'
+    ]
+}
+
+checkstyle {
+    configDir = file("src/quality/config/checkstyle")
+    ignoreFailures = false
+    sourceSets = [sourceSets.main]
+    toolVersion = "${checkstyleVersion}"
+}
+
+pmd {
+    ignoreFailures = false
+    consoleOutput = true
+    ruleSetFiles = files("src/quality/config/pmd/pmd.xml")
+    ruleSets = [] // https://github.com/pmd/pmd/issues/876
+    sourceSets = [sourceSets.main]
+    toolVersion = "6.10.0"
+}
+
+spotbugs {
+    excludeFilter = file("src/quality/config/spotbugs/exclude.xml")
+    ignoreFailures = false
+    sourceSets = [sourceSets.main]
+    toolVersion = "3.1.11"
+}
+
+
+tasks.withType(SpotBugsTask) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+springBoot {
+    mainClassName = "nl.hoepsch.pm.P1ReaderHackPublisherApp"
+}
+
+
+bootRun {
+    systemProperty("spring.profiles.active", System.properties["spring.profiles.active"])
+    if (project.hasProperty('debugPort')) {
+        jvmArgs += ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=" + findProperty('debugPort')]
+    }
+    jvmArgs += ["-Xmx1024m", "-Dspring.output.ansi.enabled=ALWAYS", "-Dfile.encoding=UTF-8"]
+}

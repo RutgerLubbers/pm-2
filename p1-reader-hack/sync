@@ -1,0 +1,3 @@
+#!/usr/local/bin/bash
+
+rsync -avzh --delete odroid:/opt/p1-reader-hack/* .

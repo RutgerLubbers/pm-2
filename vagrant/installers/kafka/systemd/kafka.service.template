@@ -1,7 +1,8 @@
 [Unit]
 Description=Apache Kafka - broker
 Documentation=http://docs.confluent.io/
-After=network.target confluent-zookeeper.target
+After=network-online.target confluent-zookeeper.target
+Wants=network-online.target
 
 [Service]
 Type=simple
@@ -9,7 +10,8 @@ User=cp-kafka
 Group=confluent
 Environment="LOG_DIR=${LOG_DIR}"
 ExecStart=/usr/bin/kafka-server-start /etc/kafka/server-${BROKER_ID}.properties
-TimeoutStopSec=180
+ExecStop=/usr/bin/kafka-server-stop /etc/kafka/server-${BROKER_ID}.properties
+TimeoutStopSec=10
 Restart=no
 
 [Install]
