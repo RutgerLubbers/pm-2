@@ -10,12 +10,19 @@ public class ObisTag {
     /**
      * The tag.
      */
-    private final ObisTagType tag;
+    private ObisTagType tag;
 
     /**
      * The value.
      */
-    private final String value;
+    private String value;
+
+    /**
+     * The default constructor.
+     */
+    public ObisTag() {
+        // Do nothing.
+    }
 
     /**
      * The constructor.
@@ -34,8 +41,18 @@ public class ObisTag {
     }
 
     @SuppressWarnings("PMD.CommentRequired")
+    public void setTag(final ObisTagType tag) {
+        this.tag = tag;
+    }
+
+    @SuppressWarnings("PMD.CommentRequired")
     public String getValue() {
         return value;
+    }
+
+    @SuppressWarnings("PMD.CommentRequired")
+    public void setValue(final String value) {
+        this.value = value;
     }
 
     /**

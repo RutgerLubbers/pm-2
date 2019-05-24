@@ -3,6 +3,7 @@ package nl.hoepsch.pm.config;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 import nl.hoepsch.pm.dsmr.dto.DSMR5DatagramDto;
+import nl.hoepsch.pm.electricity.actual.dto.ElectricityActualReadoutDto;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,22 +52,23 @@ public class KafkaProducerConfig {
     }
 
     /**
-     * A shopping cart producer factory using the shopping cart value serializer.
+     * The kafka template to publish datagrams with.
      *
-     * @return a new producer factory.
+     * @return
      */
-    @Bean
-    public ProducerFactory<String, DSMR5DatagramDto> producerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerConfigs());
+    @Bean(name = "datagramTemplate")
+    public KafkaTemplate<String, DSMR5DatagramDto> datagramTemplate() {
+        return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(producerConfigs()));
     }
 
     /**
      * The kafka template to publish datagrams with.
+     *
      * @return
      */
-    @Bean(name = "datagramKafkaTemplate")
-    public KafkaTemplate<String, DSMR5DatagramDto> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+    @Bean(name = "electricityActualReadoutTemplate")
+    public KafkaTemplate<String, ElectricityActualReadoutDto> electricityActualReadoutTemplate() {
+        return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(producerConfigs()));
     }
     //    /**
     //     * Setup a reply kafka template.

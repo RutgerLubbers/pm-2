@@ -24,7 +24,7 @@ public class DatagramReceiver {
      *
      * @param dto The payload.
      */
-    @KafkaListener(topics = DATAGRAM_TOPIC)
+    @KafkaListener(topics = DATAGRAM_TOPIC, clientIdPrefix = "foo")
     public void receiveDatagram(final DSMR5DatagramDto dto) {
         LOGGER.debug("Got datagram ..");
     }

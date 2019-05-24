@@ -13,17 +13,24 @@ public class DSMR5Datagram {
     /**
      * The raw input string.
      */
-    private final String raw;
+    private String raw;
 
     /**
      * The parsed tags.
      */
-    private final List<ObisTag> tags;
+    private List<ObisTag> tags;
 
     /**
      * The calculated checksum.
      */
-    private final int checkSum;
+    private int checkSum;
+
+    /**
+     * The default constructor.
+     */
+    public DSMR5Datagram() {
+        // Do nothing.
+    }
 
     /**
      * The constructor.
@@ -44,13 +51,28 @@ public class DSMR5Datagram {
     }
 
     @SuppressWarnings("PMD.CommentRequired")
+    public void setRaw(final String raw) {
+        this.raw = raw;
+    }
+
+    @SuppressWarnings("PMD.CommentRequired")
     public List<ObisTag> getTags() {
         return tags;
     }
 
     @SuppressWarnings("PMD.CommentRequired")
+    public void setTags(final List<ObisTag> tags) {
+        this.tags = tags;
+    }
+
+    @SuppressWarnings("PMD.CommentRequired")
     public int getCheckSum() {
         return checkSum;
+    }
+
+    @SuppressWarnings("PMD.CommentRequired")
+    public void setCheckSum(final int checkSum) {
+        this.checkSum = checkSum;
     }
 
     /**
@@ -67,12 +89,30 @@ public class DSMR5Datagram {
      * @param tagType The tag to retrieve.
      * @return The tag's value, or {@code null}.
      */
-    public String getValue(final ObisTagType tagType) {
+    public ObisTag getTag(final ObisTagType tagType) {
         for (final ObisTag tag : tags) {
             if (tag.hasType(tagType)) {
-                return tag.getValue();
+                return tag;
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the tag's value.
+     *
+     * @param tagType The tag type to get the value for.
+     * @return The tag's value.
+     */
+    public String getTagValue(final ObisTagType tagType) {
+        final ObisTag tag = getTag(tagType);
+        return getTagValue(tag);
+    }
+
+    private String getTagValue(final ObisTag tag) {
+        if (tag == null) {
+            return null;
+        }
+        return tag.getValue();
     }
 }

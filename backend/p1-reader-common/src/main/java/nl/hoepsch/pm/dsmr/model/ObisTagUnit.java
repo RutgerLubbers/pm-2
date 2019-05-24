@@ -9,6 +9,7 @@ public enum ObisTagUnit {
     CUBIC_METER("m3"),
     KILO_WATT("kW"),
     KILO_WATT_HOUR("kWh"),
+    TIMESTAMP(""),
     VOLT("V");
 
     /**

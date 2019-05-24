@@ -1,6 +1,7 @@
 package nl.hoepsch.pm.dsmr.extractor;
 
 import nl.hoepsch.pm.dsmr.model.ObisTagType;
+
 /**
  * Value extractor for an OBIS tag.
  */

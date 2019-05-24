@@ -2,6 +2,8 @@ package nl.hoepsch.pm.dsmr.extractor;
 
 import nl.hoepsch.pm.dsmr.model.ObisTagType;
 
+import static nl.hoepsch.pm.dsmr.extractor.TagValueReader.extractValue;
+
 /**
  * Value extractor for an OBIS tag.
  */
@@ -25,16 +27,9 @@ public class ObisTagStringValueExtractor implements ObisValueExtractor<String> {
      * {@inheritDoc}
      */
     @Override
-    public String apply(final ObisTagType tag, final String line) {
-        final int unitLength = getUnitLength(tag);
-        return line.substring(tag.getTagLength() + 1, line.length() - 1 - unitLength);
+    public String apply(final ObisTagType tagType, final String line) {
+        return extractValue(tagType, line.substring(tagType.getTagLength()));
     }
 
-    private int getUnitLength(final ObisTagType tag) {
-        int unitLength = tag.getValueUnitLength();
-        if (unitLength > 0) {
-            unitLength++;
-        }
-        return unitLength;
-    }
+
 }

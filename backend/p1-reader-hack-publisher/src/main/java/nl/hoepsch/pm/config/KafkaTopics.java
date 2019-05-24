@@ -11,6 +11,11 @@ public final class KafkaTopics {
     public static final String DATAGRAM_TOPIC = "datagram";
 
     /**
+     * The electricity actual topic.
+     */
+    public static final String ELECTRICITY_ACTUAL_TOPIC = "electricity-actual";
+
+    /**
      * Utility constructor.
      */
     private KafkaTopics() {

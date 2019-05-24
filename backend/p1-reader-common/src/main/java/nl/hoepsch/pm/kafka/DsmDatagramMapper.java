@@ -9,13 +9,21 @@ import org.mapstruct.Mapper;
  * Mapper to create the DTO from the model.
  */
 @Mapper(config = SharedMapperConfig.class, uses = {ObisTagDtoMapper.class})
-public interface DsmDatagramDtoMapper {
+public interface DsmDatagramMapper {
 
     /**
-     * Maps the model {@link DSMR5Datagram} onto the {@link DSMR5DatagramDto}.
+     * Maps the input {@link DSMR5Datagram} onto the {@link DSMR5DatagramDto}.
      *
      * @param model The input.
      * @return The mapped output.
      */
-    DSMR5DatagramDto toDto(DSMR5Datagram model);
+    DSMR5DatagramDto map(DSMR5Datagram model);
+
+    /**
+     * Maps the input {@link DSMR5DatagramDto} onto the {@link DSMR5Datagram}.
+     *
+     * @param model The input.
+     * @return The mapped output.
+     */
+    DSMR5Datagram map(DSMR5DatagramDto model);
 }

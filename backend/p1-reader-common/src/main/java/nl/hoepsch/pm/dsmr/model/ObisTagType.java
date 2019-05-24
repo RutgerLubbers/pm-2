@@ -5,6 +5,7 @@ import static nl.hoepsch.pm.dsmr.model.ObisTagUnit.CUBIC_METER;
 import static nl.hoepsch.pm.dsmr.model.ObisTagUnit.KILO_WATT;
 import static nl.hoepsch.pm.dsmr.model.ObisTagUnit.KILO_WATT_HOUR;
 import static nl.hoepsch.pm.dsmr.model.ObisTagUnit.NONE;
+import static nl.hoepsch.pm.dsmr.model.ObisTagUnit.TIMESTAMP;
 import static nl.hoepsch.pm.dsmr.model.ObisTagUnit.VOLT;
 
 /**
@@ -14,7 +15,7 @@ import static nl.hoepsch.pm.dsmr.model.ObisTagUnit.VOLT;
 public enum ObisTagType {
     EQUIPMENT_IDENTIFICATION("/"),
     VERSION_INFO("1-3:0.2.8"),
-    TIME_STAMP("0-0:1.0.0"),
+    TIME_STAMP("0-0:1.0.0", TIMESTAMP),
     EQUIPMENT_IDENTIFIER("0-0:96.1.1"),
     ELECTRICITY_DELIVERED_TO_CLIENT_METER_1("1-0:1.8.1", KILO_WATT_HOUR),
     ELECTRICITY_DELIVERED_TO_CLIENT_METER_2("1-0:1.8.2", KILO_WATT_HOUR),
@@ -47,7 +48,7 @@ public enum ObisTagType {
     INSTANTANEOUS_POWER_DELIVERED_BY_CLIENT_L3("1-0:62.7.0", KILO_WATT),
     GAS_METER_CHANNEL("0-1:24.1.0"),
     GAS_METER_IDENTIFIER("0-1:96.1.0"),
-    GAS_METER_TIME_STAMP("0-1:24.2.1"),
+    GAS_METER_TIME_STAMP("0-1:24.2.1", TIMESTAMP),
     GAS_DELIVERED_TO_CLIENT("0-1:24.2.1", CUBIC_METER);
 
     /**

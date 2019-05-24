@@ -1,0 +1,32 @@
+{
+  "type": "record",
+  "name": "ElectricityMeterReadoutDto",
+  "namespace": "nl.hoepsch.pm.electricity.meter.dto",
+  "fields": [
+    {
+      "name": "timestamp",
+      "type": [
+        "null",
+        "long"
+      ],
+      "logicalType": "timestamp-millis",
+      "default": null
+    },
+    {
+      "name": "deliveredToClientMeter1",
+      "type": "double"
+    },
+    {
+      "name": "deliveredToClientMeter2",
+      "type": "double"
+    },
+    {
+      "name": "deliveredByClientMeter1",
+      "type": "double"
+    },
+    {
+      "name": "deliveredByClientMeter2",
+      "type": "double"
+    }
+  ]
+}

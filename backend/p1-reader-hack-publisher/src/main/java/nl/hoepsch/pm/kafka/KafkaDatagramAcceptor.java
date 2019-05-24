@@ -4,13 +4,13 @@ import nl.hoepsch.pm.DatagramAcceptor;
 import nl.hoepsch.pm.config.KafkaTopics;
 import nl.hoepsch.pm.dsmr.dto.DSMR5DatagramDto;
 import nl.hoepsch.pm.dsmr.model.DSMR5Datagram;
-import nl.hoepsch.pm.dsmr.model.ObisTagType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+
+import static nl.hoepsch.pm.dsmr.model.ObisTagType.TIME_STAMP;
 
 /**
  * Kafka handler for new datagrams.
@@ -31,7 +31,7 @@ public class KafkaDatagramAcceptor implements DatagramAcceptor {
     /**
      * Datagram mapper.
      */
-    private final DsmDatagramDtoMapper dtoMapper;
+    private final DsmDatagramMapper dtoMapper;
 
     /**
      * The constructor.
@@ -40,8 +40,8 @@ public class KafkaDatagramAcceptor implements DatagramAcceptor {
      * @param dtoMapper     Datagram mapper.
      */
     @Autowired
-    public KafkaDatagramAcceptor(@Qualifier("datagramKafkaTemplate") final KafkaTemplate<String, DSMR5DatagramDto> kafkaTemplate,
-        final DsmDatagramDtoMapper dtoMapper) {
+    public KafkaDatagramAcceptor(final KafkaTemplate<String, DSMR5DatagramDto> kafkaTemplate,
+        final DsmDatagramMapper dtoMapper) {
         this.kafkaTemplate = kafkaTemplate;
         this.dtoMapper = dtoMapper;
     }
@@ -51,9 +51,9 @@ public class KafkaDatagramAcceptor implements DatagramAcceptor {
      */
     @Override
     public void accept(final DSMR5Datagram datagram) {
-        final String timestamp = datagram.getValue(ObisTagType.TIME_STAMP);
+        final String timestamp = datagram.getTagValue(TIME_STAMP);
         LOGGER.debug("Publishing datagram '{}'.", timestamp);
-        final DSMR5DatagramDto dto = dtoMapper.toDto(datagram);
+        final DSMR5DatagramDto dto = dtoMapper.map(datagram);
         kafkaTemplate.send(KafkaTopics.DATAGRAM_TOPIC, dto);
     }
 }

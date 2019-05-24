@@ -12,10 +12,18 @@ import org.mapstruct.Mapper;
 public interface ObisTagDtoMapper {
 
     /**
-     * Maps the model {@link ObisTag} onto the {@link ObisTagDto}.
+     * Maps the input {@link ObisTag} onto the {@link ObisTagDto}.
      *
      * @param model The input.
      * @return The mapped output.
      */
-    ObisTagDto toDto(ObisTag model);
+    ObisTagDto map(ObisTag model);
+
+    /**
+     * Maps the input {@link ObisTagDto} onto the {@link ObisTag}.
+     *
+     * @param model The input.
+     * @return The mapped output.
+     */
+    ObisTag map(ObisTagDto model);
 }
