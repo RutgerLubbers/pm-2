@@ -203,3 +203,6 @@ gradle-app.setting
 .DS_Store
 
 # End of https://www.gitignore.io/api/node,java,vagrant,intellij
+
+p1-reader-hack/data
+!p1-reader-hack/zip/*.zip
