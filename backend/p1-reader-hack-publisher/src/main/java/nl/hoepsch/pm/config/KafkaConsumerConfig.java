@@ -58,11 +58,21 @@ public class KafkaConsumerConfig {
         return props;
     }
 
+    /**
+     * The consumer factory for Avro serialized payloads.
+     *
+     * @return the consumer factory.
+     */
     @Bean
     public DefaultKafkaConsumerFactory<Object, Object> defaultAvroSerializedKafkaConsumerFactory() {
         return new DefaultKafkaConsumerFactory<>(defaultAvroSerializedConsumerConfigs());
     }
 
+    /**
+     * The producer configuration for Avro serialized payloads.
+     *
+     * @return The configuration map.
+     */
     @Bean
     public Map<String, Object> defaultAvroSerializedProducerConfigs() {
         final Map<String, Object> props = new HashMap<>();
@@ -73,11 +83,22 @@ public class KafkaConsumerConfig {
         return props;
     }
 
+    /**
+     * The producer factory for Avro serialized payloads.
+     *
+     * @return The producer factory.
+     */
     @Bean
     public ProducerFactory<String, Object> defaultAvroSerializedProducerFactory() {
         return new DefaultKafkaProducerFactory<>(defaultAvroSerializedProducerConfigs());
     }
 
+    /**
+     * Default Avro serialized Kafka template.
+     *
+     * @param avroProducerFactory The kafka producer factory.
+     * @return The template.
+     */
     @Primary
     @Bean
     public KafkaTemplate<String, Object> defaultAvroSerializedKafkaTemplate(final ProducerFactory<String, Object> avroProducerFactory) {

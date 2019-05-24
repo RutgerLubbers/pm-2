@@ -61,6 +61,10 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
+    /**
+     * The kafka template to publish datagrams with.
+     * @return
+     */
     @Bean(name = "datagramKafkaTemplate")
     public KafkaTemplate<String, DSMR5DatagramDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());

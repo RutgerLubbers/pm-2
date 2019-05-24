@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import static nl.hoepsch.pm.config.KafkaTopics.DATAGRAM_TOPIC;
 
+/**
+ * Listener for datagrams.
+ */
 @Service
 public class DatagramReceiver {
 
@@ -16,6 +19,11 @@ public class DatagramReceiver {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(DatagramReceiver.class);
 
+    /**
+     * Listen method for DSMR datagrams.
+     *
+     * @param dto The payload.
+     */
     @KafkaListener(topics = DATAGRAM_TOPIC)
     public void receiveDatagram(final DSMR5DatagramDto dto) {
         LOGGER.debug("Got datagram ..");

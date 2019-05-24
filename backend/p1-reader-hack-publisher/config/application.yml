@@ -7,6 +7,9 @@ logging:
     pattern:
         console: "%white(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) [%blue(%X{tx.id}) %white(%X{task.id})] %white([%thread]) %cyan(%logger:%line) - %msg%n"
 
+datagram-store:
+    path:
+
 spring:
     kafka:
         bootstrap-servers: localhost:19092,localhost:29092,localhost:39092

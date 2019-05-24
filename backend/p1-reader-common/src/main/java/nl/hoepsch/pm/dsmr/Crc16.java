@@ -1,7 +1,15 @@
 package nl.hoepsch.pm.dsmr;
 
-public class Crc16 {
+import org.apache.commons.compress.utils.Charsets;
 
+/**
+ * Utility to calculate a CRC16 checksum.
+ */
+public final class Crc16 {
+
+    /**
+     * Precomputed lookup table for the CRC-16 calculations.
+     */
     private static final int[] TABLE = {
         0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,
         0xC601, 0x06C0, 0x0780, 0xC741, 0x0500, 0xC5C1, 0xC481, 0x0440,
@@ -37,43 +45,24 @@ public class Crc16 {
         0x8201, 0x42C0, 0x4380, 0x8341, 0x4100, 0x81C1, 0x8081, 0x4040,
     };
 
-    public static void main(String[] args) {
-        String input = "/Ene5\\XS210 ESMR 5.0\r\n"
-            + "\r\n"
-            + "1-3:0.2.8(50)\r\n"
-            + "0-0:1.0.0(190103173646W)\r\n"
-            + "0-0:96.1.1(4530303437303030303035393839353137)\r\n"
-            + "1-0:1.8.1(002692.422*kWh)\r\n"
-            + "1-0:1.8.2(001565.236*kWh)\r\n"
-            + "1-0:2.8.1(000731.246*kWh)\r\n"
-            + "1-0:2.8.2(001499.666*kWh)\r\n"
-            + "0-0:96.14.0(0002)\r\n"
-            + "1-0:1.7.0(00.683*kW)\r\n"
-            + "1-0:2.7.0(00.000*kW)\r\n"
-            + "0-0:96.7.21(00158)\r\n"
-            + "0-0:96.7.9(00003)\r\n"
-            + "1-0:99.97.0(1)(0-0:96.7.19)(170725200409S)(0000000249*s)\r\n"
-            + "1-0:32.32.0(00003)\r\n"
-            + "1-0:32.36.0(00000)\r\n"
-            + "0-0:96.13.0()\r\n"
-            + "1-0:32.7.0(226.0*V)\r\n"
-            + "1-0:31.7.0(003*A)\r\n"
-            + "1-0:21.7.0(00.683*kW)\r\n"
-            + "1-0:22.7.0(00.000*kW)\r\n"
-            + "0-1:24.1.0(003)\r\n"
-            + "0-1:96.1.0(4730303533303033363335373135313137)\r\n"
-            + "0-1:24.2.1(190103173500W)(01641.823*m3)\r\n"
-            + "!";
-            //E794
-
-        final int crc = calculateCrc(input);
-        System.out.println(Integer.toHexString(crc));
+    /**
+     * Utility constructor.
+     */
+    private Crc16() {
+        // Do nothing.
     }
 
+    /**
+     * Calculate the CRC 16 checksum.
+     *
+     * @param input The input to calculate the checksum for.
+     * @return The checksum.
+     */
+    @SuppressWarnings({"PMD.ShortVariable", "PMD.ShortMethodName"})
     public static int calculateCrc(final String input) {
         int crc = 0x0000;
-        byte[] bytes = input.getBytes();
-        for (byte b : bytes) {
+        final byte[] bytes = input.getBytes(Charsets.UTF_8);
+        for (final byte b : bytes) {
             crc = (crc >>> 8) ^ TABLE[(crc ^ b) & 0xff];
         }
         return crc;

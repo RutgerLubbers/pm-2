@@ -1,5 +1,8 @@
-package nl.hoepsch.pm.dsmr.model;
+package nl.hoepsch.pm.dsmr.extractor;
 
+/**
+ * Error thrown in case a datagram's input checksum does not match the computed checksum.
+ */
 public class ChecksumMismatchError extends RuntimeException {
 
     /**

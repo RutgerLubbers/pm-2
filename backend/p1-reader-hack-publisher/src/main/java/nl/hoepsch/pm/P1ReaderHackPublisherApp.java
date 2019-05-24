@@ -3,6 +3,10 @@ package nl.hoepsch.pm;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * The Spring Boot application.
+ */
+@SuppressWarnings({"checkstyle:HideUtilityClassConstructor", "PMD.UseUtilityClass"})
 @SpringBootApplication
 public class P1ReaderHackPublisherApp {
 

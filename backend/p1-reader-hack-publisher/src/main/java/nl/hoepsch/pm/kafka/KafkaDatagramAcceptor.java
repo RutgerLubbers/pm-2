@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+/**
+ * Kafka handler for new datagrams.
+ */
 @Component
 public class KafkaDatagramAcceptor implements DatagramAcceptor {
 
@@ -26,10 +29,16 @@ public class KafkaDatagramAcceptor implements DatagramAcceptor {
     private final KafkaTemplate<String, DSMR5DatagramDto> kafkaTemplate;
 
     /**
-     *
+     * Datagram mapper.
      */
     private final DsmDatagramDtoMapper dtoMapper;
 
+    /**
+     * The constructor.
+     *
+     * @param kafkaTemplate The template to send a datagram over a Kafka topic.
+     * @param dtoMapper     Datagram mapper.
+     */
     @Autowired
     public KafkaDatagramAcceptor(@Qualifier("datagramKafkaTemplate") final KafkaTemplate<String, DSMR5DatagramDto> kafkaTemplate,
         final DsmDatagramDtoMapper dtoMapper) {
