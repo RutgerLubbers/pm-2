@@ -1,5 +1,6 @@
 package nl.hoepsch.pm;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import nl.hoepsch.pm.electricity.meter.dto.ElectricityMeterPeriodReadoutDto;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
@@ -48,6 +49,11 @@ public class P1DatagramStreamsCommandLineRunner implements CommandLineRunner {
     public void run(final String... args) {
         LOGGER.info("P1 Datagram Streams App Started.");
 
+
+        poll();
+    }
+
+    private void poll() {
         while (true) {
             try {
 
@@ -62,6 +68,7 @@ public class P1DatagramStreamsCommandLineRunner implements CommandLineRunner {
         }
     }
 
+    @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE")
     private ElectricityMeterPeriodReadoutDto get(final String key) {
         final KafkaStreams.State state = streams.state();
         if (state == KafkaStreams.State.RUNNING) {

@@ -10,6 +10,9 @@ logging:
 
 serial-port: /dev/ttyUSB0
 
+# datagram-store: /Users/tapir/power-meter-2/p1-reader-hack/zip
+datagram-store: /Users/tapir/power-meter-2/data/one-zip
+
 #
 # See https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 #

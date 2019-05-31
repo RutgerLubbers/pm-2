@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -49,20 +50,13 @@ public class SerialPortDatagramReader {
      *
      * @throws InterruptedException In case the program is stopped.
      */
+    @Async
     public void consume() throws InterruptedException {
         LOGGER.info("Opening '{}'.", port);
         final SerialPort comPort = SerialPort.getCommPort(port);
         configurePort(comPort);
 
         consume(comPort);
-
-    }
-
-    private void configurePort(final SerialPort comPort) {
-        comPort.setBaudRate(115_200);
-        comPort.setNumStopBits(ONE_STOP_BIT);
-        comPort.setParity(NO_PARITY);
-        comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 1_500, 0);
     }
 
     @SuppressWarnings("PMD.SystemPrintln")
@@ -79,5 +73,12 @@ public class SerialPortDatagramReader {
             }
             Thread.sleep(1500);
         }
+    }
+
+    private void configurePort(final SerialPort comPort) {
+        comPort.setBaudRate(115_200);
+        comPort.setNumStopBits(ONE_STOP_BIT);
+        comPort.setParity(NO_PARITY);
+        comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 1_500, 0);
     }
 }

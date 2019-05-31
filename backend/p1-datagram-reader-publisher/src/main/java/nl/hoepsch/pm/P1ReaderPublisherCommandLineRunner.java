@@ -8,8 +8,11 @@ import nl.hoepsch.pm.dsmr.SerialPortDatagramReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.nio.file.Paths;
 
 /**
  * The command line runner for the p1 reader.
@@ -38,6 +41,9 @@ public class P1ReaderPublisherCommandLineRunner implements CommandLineRunner {
      */
     private final SerialPortDatagramReader serialPortDatagramReader;
 
+    @Value("${datagram-store}")
+    private String datagramStore;
+
     /**
      * The constructor.
      *
@@ -61,9 +67,22 @@ public class P1ReaderPublisherCommandLineRunner implements CommandLineRunner {
     public void run(final String... args) {
         LOGGER.info("Started P1 Reader Publisher App.");
 
-        // fileDatagramReader.readAll("/Users/tapir/power-meter-2/p1-reader-hack/zip", datagramAcceptor);
-        fileDatagramReader.readAll("/Users/tapir/power-meter-2/data/one-zip", datagramAcceptor);
+        try {
+            serialPortDatagramReader.consume();
+        } catch (InterruptedException e) {
+            LOGGER.info("Got interrupted.", e);
+        }
 
+        if (pathExists(datagramStore)) {
+            LOGGER.info("Reading stored datagrams from '{}'.", datagramStore);
+            // fileDatagramReader.readAll("/Users/tapir/power-meter-2/p1-reader-hack/zip", datagramAcceptor);
+            // fileDatagramReader.readAll("/Users/tapir/power-meter-2/data/one-zip", datagramAcceptor);
+        }
+
+    }
+
+    private boolean pathExists(final String path) {
+        return Paths.get(path).toFile().exists();
     }
 
 }
