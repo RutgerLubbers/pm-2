@@ -1,6 +1,5 @@
 package nl.hoepsch.pm;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import nl.hoepsch.pm.dsmr.DatagramAcceptor;
 import nl.hoepsch.pm.dsmr.FileDatagramReader;
 import nl.hoepsch.pm.dsmr.KafkaDatagramAcceptor;
@@ -58,15 +57,13 @@ public class P1ReaderPublisherCommandLineRunner implements CommandLineRunner {
     /**
      * {@inheritDoc}
      */
-    @SuppressFBWarnings("DMI_HARDCODED_ABSOLUTE_FILENAME")
     @Override
     public void run(final String... args) {
         LOGGER.info("Started P1 Reader Publisher App.");
 
         if (pathExists(datagramStore)) {
             LOGGER.info("Reading stored datagrams from '{}'.", datagramStore);
-            // fileDatagramReader.readAll("/Users/tapir/power-meter-2/p1-reader-hack/zip", datagramAcceptor);
-            // fileDatagramReader.readAll("/Users/tapir/power-meter-2/data/one-zip", datagramAcceptor);
+            fileDatagramReader.readAll(datagramStore, datagramAcceptor);
         }
 
     }

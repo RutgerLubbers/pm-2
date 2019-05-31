@@ -1,5 +1,6 @@
-package nl.hoepsch.pm.electricity.meter;
+package nl.hoepsch.pm.electricity.meter.kafka;
 
+import nl.hoepsch.pm.electricity.meter.ElectricityMeterReadoutMapper;
 import nl.hoepsch.pm.electricity.meter.dto.ElectricityMeterReadoutDto;
 import nl.hoepsch.pm.electricity.meter.model.ElectricityMeterReadout;
 import org.apache.kafka.streams.KeyValue;

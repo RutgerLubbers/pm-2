@@ -1,8 +1,9 @@
-package nl.hoepsch.pm.electricity.meter;
+package nl.hoepsch.pm.electricity.meter.kafka;
 
 import nl.hoepsch.pm.dsmr.converter.TagValueExtractor;
 import nl.hoepsch.pm.dsmr.dto.DSMR5DatagramDto;
 import nl.hoepsch.pm.dsmr.model.DSMR5Datagram;
+import nl.hoepsch.pm.electricity.meter.ElectricityMeterReadoutMapper;
 import nl.hoepsch.pm.electricity.meter.dto.ElectricityMeterReadoutDto;
 import nl.hoepsch.pm.electricity.meter.model.ElectricityMeterReadout;
 import nl.hoepsch.pm.kafka.DsmDatagramMapper;

@@ -35,8 +35,10 @@ dependencies {
     compile("org.apache.avro:avro:${avroVersion}")
     // </Kafka dependencies>
 
+    // <Serial Port>
     // https://mvnrepository.com/artifact/com.fazecast/jSerialComm
     compile("com.fazecast:jSerialComm:2.5.1")
+    // </Serial Port>
 
 
 }

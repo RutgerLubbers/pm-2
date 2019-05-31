@@ -4,8 +4,10 @@ dependencies {
 
     compile project(":p1-reader-common")
 
+    compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.springframework.boot:spring-boot-configuration-processor"
+    compile "org.springframework.boot:spring-boot-starter-web"
 
     compile 'org.yaml:snakeyaml:1.24'
 
@@ -36,7 +38,6 @@ dependencies {
     // </Kafka dependencies>
 
 }
-
 
 springBoot {
     buildInfo()

@@ -4,7 +4,7 @@ import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import nl.hoepsch.pm.dsmr.dto.DSMR5DatagramDto;
 import nl.hoepsch.pm.electricity.actual.dto.ElectricityActualReadoutDto;
-import nl.hoepsch.pm.electricity.meter.ElectricityMeterReadoutToDayTransformer;
+import nl.hoepsch.pm.electricity.meter.kafka.ElectricityMeterReadoutToDayTransformer;
 import nl.hoepsch.pm.electricity.meter.dto.ElectricityMeterPeriodReadoutDto;
 import nl.hoepsch.pm.electricity.meter.dto.ElectricityMeterReadoutDto;
 import org.apache.kafka.common.serialization.Serdes;
