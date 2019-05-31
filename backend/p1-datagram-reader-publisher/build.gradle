@@ -1,0 +1,57 @@
+apply plugin: "org.springframework.boot"
+
+dependencies {
+
+    compile project(":p1-reader-common")
+
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    compile "org.springframework.boot:spring-boot-configuration-processor"
+
+    compile 'org.yaml:snakeyaml:1.24'
+
+//    compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+//    compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+//    compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+//    compile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonVersion}"
+//    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
+
+    // <Kafka dependencies>
+    // the spring framework kafka wrapper
+    compile("org.springframework.kafka:spring-kafka:${springKafkaVersion}")
+
+    // the kafka client.
+    compile("org.apache.kafka:kafka-clients:${kafkaVersion}")
+
+    // support for streams is an optional dependency of the spring-kafka project and isn’t downloaded transitively.
+    compile("org.apache.kafka:kafka-streams:${kafkaVersion}")
+
+    // spring kafka test support.
+    testCompile("org.springframework.kafka:spring-kafka-test:${springKafkaVersion}")
+
+
+    // avro serializer to convert from Java to Avro and vice versa.
+    compile("io.confluent:kafka-avro-serializer:${kafkaAvroVersion}")
+    compile("io.confluent:kafka-streams-avro-serde:${kafkaAvroVersion}")
+    compile("org.apache.avro:avro:${avroVersion}")
+    // </Kafka dependencies>
+
+    // https://mvnrepository.com/artifact/com.fazecast/jSerialComm
+    compile("com.fazecast:jSerialComm:2.5.1")
+
+
+}
+
+
+springBoot {
+    buildInfo()
+    mainClassName = "nl.hoepsch.pm.P1ReaderPublisherApp"
+}
+
+
+bootRun {
+    systemProperty("spring.profiles.active", System.properties["spring.profiles.active"])
+    if (project.hasProperty('debugPort')) {
+        jvmArgs += ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=" + findProperty('debugPort')]
+    }
+    jvmArgs += ["-Xmx1024m", "-Dspring.output.ansi.enabled=ALWAYS", "-Dfile.encoding=UTF-8"]
+}

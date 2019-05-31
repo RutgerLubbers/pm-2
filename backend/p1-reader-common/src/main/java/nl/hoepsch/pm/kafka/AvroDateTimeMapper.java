@@ -5,6 +5,7 @@ import org.mapstruct.Mapper;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import static org.mapstruct.ReportingPolicy.IGNORE;
@@ -89,7 +90,7 @@ public interface AvroDateTimeMapper {
         if (timeStampMillis == null) {
             return null;
         }
-        return ZonedDateTime.from(Instant.ofEpochMilli(timeStampMillis));
+        return ZonedDateTime.ofInstant(Instant.ofEpochMilli(timeStampMillis), ZoneId.of("Europe/Amsterdam"));
     }
 
 }

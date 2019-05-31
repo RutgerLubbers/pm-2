@@ -56,9 +56,6 @@ configure(allprojects) { project ->
     group = "nl.hoepsch.pm"
     version = rootProject.version
 
-//    sourceCompatibility = "${javaVersion}"
-//    targetCompatibility = "${javaVersion}"
-
     apply plugin: "java"
     apply plugin: 'groovy'
     apply plugin: "io.spring.dependency-management"
@@ -66,7 +63,10 @@ configure(allprojects) { project ->
     apply plugin: "checkstyle"
     apply plugin: "com.github.spotbugs"
     apply plugin: "pmd"
-    apply plugin: "distribution"
+//    apply plugin: "distribution"
+
+    sourceCompatibility = 1.11
+    targetCompatibility = 1.11
 
     repositories {
         jcenter()
@@ -83,6 +83,14 @@ configure(allprojects) { project ->
             mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
         }
     }
+
+    configurations {
+        compile {
+            exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+            exclude group: 'log4j', module: 'log4j'
+        }
+    }
+
 
     dependencies {
         // <Spring Context>
@@ -110,6 +118,10 @@ configure(allprojects) { project ->
         checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
         checkstyle "com.github.sevntu-checkstyle:sevntu-checks:${sevntuChecksVersion}"
         // </CheckStyle>
+
+        // https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api
+        compile("javax.annotation:javax.annotation-api:1.3.2")
+
     }
 
     idea {

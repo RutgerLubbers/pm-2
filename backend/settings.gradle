@@ -9,4 +9,5 @@
 
 rootProject.name = 'p1-reader'
 include 'p1-reader-common',
-    'p1-reader-hack-publisher'
+    'p1-datagram-reader-publisher',
+    'p1-datagram-streams'

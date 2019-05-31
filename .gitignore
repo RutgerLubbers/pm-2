@@ -206,3 +206,5 @@ gradle-app.setting
 
 p1-reader-hack/data
 !p1-reader-hack/zip/*.zip
+
+tmp/

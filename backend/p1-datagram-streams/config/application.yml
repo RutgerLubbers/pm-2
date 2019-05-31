@@ -1,0 +1,25 @@
+logging:
+    level:
+        org.springframework: INFO
+
+        nl.hoepsch: DEBUG
+        nl.hoepsch.pm.kafka.receiver: INFO
+
+    pattern:
+        console: "%white(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) [%blue(%X{tx.id}) %white(%X{task.id})] %white([%thread]) %cyan(%logger:%line) - %msg%n"
+
+#
+# See https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+#
+spring:
+    kafka:
+        bootstrap-servers: localhost:19092,localhost:29092,localhost:39092
+        schema:
+            registry:
+                url: http://localhost:19091
+                initial-capacity: 100
+
+        streams:
+            application-id: p1-datagram-streams-app
+            client-id: p1-datagram-streams-client
+            state-dir: ./tmp/kafka-streams
