@@ -20,12 +20,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * Rest controller to get electricity meter usage for a day.
  */
 @RestController
-public class ElectricityMeterUsageForDayController {
+public class ElectricityMeterPerDayController {
 
     /**
      * The logger to use.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ElectricityMeterUsageForDayController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ElectricityMeterPerDayController.class);
 
     /**
      * The view as configured in the streams.
@@ -38,7 +38,7 @@ public class ElectricityMeterUsageForDayController {
      * @param electricityMeterPerDayView The view as configured in the streams.
      */
     @Autowired
-    public ElectricityMeterUsageForDayController(final ElectricityMeterPerDayView electricityMeterPerDayView) {
+    public ElectricityMeterPerDayController(final ElectricityMeterPerDayView electricityMeterPerDayView) {
         this.electricityMeterPerDayView = electricityMeterPerDayView;
     }
 
@@ -48,7 +48,7 @@ public class ElectricityMeterUsageForDayController {
      * @param day The day to get the usage for.
      * @return The daily usage.
      */
-    @GetMapping(path = "/usage/days/{day}", produces = {APPLICATION_JSON_VALUE, APPLICATION_JSON_UTF8_VALUE})
+    @GetMapping(path = "/meter/days/{day}", produces = {APPLICATION_JSON_VALUE, APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<ElectricityMeterUsageResource> getUsageForDay(@PathVariable("day") final String day) {
         LOGGER.debug("Getting electricity usage for '{}'.", day);
 

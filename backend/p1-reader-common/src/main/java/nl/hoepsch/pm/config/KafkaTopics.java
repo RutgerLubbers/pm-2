@@ -18,6 +18,13 @@ public final class KafkaTopics {
     public static final String ELECTRICITY_ACTUAL_TOPIC = "electricity-actual";
 
     /**
+     * The electricity actual view.
+     *
+     * This view contains all the values of the actual usage (kW) and supply (kW) for a day.
+     */
+    public static final String ELECTRICITY_ACTUAL_PER_DAY_VIEW = "vw-electricity-actual-per-day";
+
+    /**
      * The electricity meter topic.
      *
      * This topic contains the values of the total usage (kWh) and supply (kWh) over time.

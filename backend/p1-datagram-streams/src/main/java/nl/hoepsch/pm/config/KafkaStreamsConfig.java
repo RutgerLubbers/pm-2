@@ -3,10 +3,12 @@ package nl.hoepsch.pm.config;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import nl.hoepsch.pm.dsmr.dto.DSMR5DatagramDto;
+import nl.hoepsch.pm.electricity.actual.kafka.ElectricityActualReadoutToDayTransformer;
+import nl.hoepsch.pm.electricity.actual.dto.ElectricityActualPeriodReadoutDto;
 import nl.hoepsch.pm.electricity.actual.dto.ElectricityActualReadoutDto;
-import nl.hoepsch.pm.electricity.meter.kafka.ElectricityMeterReadoutToDayTransformer;
 import nl.hoepsch.pm.electricity.meter.dto.ElectricityMeterPeriodReadoutDto;
 import nl.hoepsch.pm.electricity.meter.dto.ElectricityMeterReadoutDto;
+import nl.hoepsch.pm.electricity.meter.kafka.ElectricityMeterReadoutToDayTransformer;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -20,9 +22,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 
+import java.util.ArrayList;
 import java.util.Properties;
 
 import static nl.hoepsch.pm.config.KafkaTopics.DATAGRAM_TOPIC;
+import static nl.hoepsch.pm.config.KafkaTopics.ELECTRICITY_ACTUAL_PER_DAY_VIEW;
 import static nl.hoepsch.pm.config.KafkaTopics.ELECTRICITY_ACTUAL_TOPIC;
 import static nl.hoepsch.pm.config.KafkaTopics.ELECTRICITY_METER_PER_DAY_VIEW;
 import static nl.hoepsch.pm.config.KafkaTopics.ELECTRICITY_METER_TOPIC;
@@ -101,17 +105,23 @@ public class KafkaStreamsConfig {
     @Bean
     public Topology p1ReaderTopology(
         final ValueMapper<DSMR5DatagramDto, ElectricityActualReadoutDto> toElectricityActualReadoutMapper,
+        final ElectricityActualReadoutToDayTransformer actualToDayTransformer,
         final ValueMapper<DSMR5DatagramDto, ElectricityMeterReadoutDto> toElectricityMeterReadoutMapper,
-        final ElectricityMeterReadoutToDayTransformer toDayTransformer) {
-        return createTopology(new StreamsBuilder(), toElectricityActualReadoutMapper, toElectricityMeterReadoutMapper, toDayTransformer);
+        final ElectricityMeterReadoutToDayTransformer meterToDayTransformer) {
+        return createTopology(new StreamsBuilder(),
+            toElectricityActualReadoutMapper,
+            actualToDayTransformer,
+            toElectricityMeterReadoutMapper,
+            meterToDayTransformer);
     }
 
 
     @SuppressWarnings("PMD.ExcessiveMethodLength")
     private Topology createTopology(final StreamsBuilder streamsBuilder,
         final ValueMapper<DSMR5DatagramDto, ElectricityActualReadoutDto> toElectricityActualReadoutMapper,
+        final ElectricityActualReadoutToDayTransformer actualToDayTransformer,
         final ValueMapper<DSMR5DatagramDto, ElectricityMeterReadoutDto> toElectricityMeterReadoutMapper,
-        final ElectricityMeterReadoutToDayTransformer toDayTransformer) {
+        final ElectricityMeterReadoutToDayTransformer meterToDayTransformer) {
 
         /*
          * Read the datagram topic and create a stream of it.
@@ -129,6 +139,25 @@ public class KafkaStreamsConfig {
         electricityActualStream.to(ELECTRICITY_ACTUAL_TOPIC);
 
         /*
+         * Create an electricity actual stream with the day as the key.
+         */
+        final KStream<String, ElectricityActualReadoutDto> electricityActualDayStream =
+            electricityActualStream.transform(() -> actualToDayTransformer);
+
+        /*
+         * Aggregate the electricity actual stream
+         */
+        electricityActualDayStream.groupByKey().aggregate(
+            () -> new ElectricityActualPeriodReadoutDto(new ArrayList<>()),
+            (key, value, aggregate) -> {
+                aggregate.getValues().add(value);
+
+                return aggregate;
+            },
+            Materialized.as(ELECTRICITY_ACTUAL_PER_DAY_VIEW)
+        );
+
+        /*
          * Create an electricity meter value stream from the datagram stream.
          */
         final KStream<String, ElectricityMeterReadoutDto> electricityMeterStream =
@@ -142,7 +171,7 @@ public class KafkaStreamsConfig {
          * Create an electricity meter stream with the day as the key.
          */
         final KStream<String, ElectricityMeterReadoutDto> electricityMeterDayStream =
-            electricityMeterStream.transform(() -> toDayTransformer);
+            electricityMeterStream.transform(() -> meterToDayTransformer);
 
         /*
          * Aggregate the electricity meter stream

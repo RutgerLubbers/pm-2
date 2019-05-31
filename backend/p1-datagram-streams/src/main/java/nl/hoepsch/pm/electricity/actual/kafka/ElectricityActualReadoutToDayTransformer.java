@@ -1,8 +1,8 @@
-package nl.hoepsch.pm.electricity.meter.kafka;
+package nl.hoepsch.pm.electricity.actual.kafka;
 
-import nl.hoepsch.pm.electricity.meter.ElectricityMeterReadoutMapper;
-import nl.hoepsch.pm.electricity.meter.dto.ElectricityMeterReadoutDto;
-import nl.hoepsch.pm.electricity.meter.model.ElectricityMeterReadout;
+import nl.hoepsch.pm.electricity.actual.ElectricityActualReadoutMapper;
+import nl.hoepsch.pm.electricity.actual.dto.ElectricityActualReadoutDto;
+import nl.hoepsch.pm.electricity.actual.model.ElectricityActualReadout;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Transformer;
 import org.apache.kafka.streams.processor.ProcessorContext;
@@ -17,8 +17,8 @@ import java.time.format.DateTimeFormatter;
  * Each readout will be returned as is, the original key will be replaced by the readout's timestamp (on day basis).
  */
 @Component
-public class ElectricityMeterReadoutToDayTransformer implements
-    Transformer<String, ElectricityMeterReadoutDto, KeyValue<String, ElectricityMeterReadoutDto>> {
+public class ElectricityActualReadoutToDayTransformer implements
+    Transformer<String, ElectricityActualReadoutDto, KeyValue<String, ElectricityActualReadoutDto>> {
 
     /**
      * The date time formatter.
@@ -26,17 +26,17 @@ public class ElectricityMeterReadoutToDayTransformer implements
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     /**
-     * The mapper to convert electricity meter readouts to and from model and dto.
+     * The mapper to convert electricity actual readouts to and from model and dto.
      */
-    private final ElectricityMeterReadoutMapper readoutMapper;
+    private final ElectricityActualReadoutMapper readoutMapper;
 
     /**
      * The constructor.
      *
-     * @param readoutMapper The mapper to convert electricity meter readouts to and from model and dto.
+     * @param readoutMapper The mapper to convert electricity actual readouts to and from model and dto.
      */
     @Autowired
-    public ElectricityMeterReadoutToDayTransformer(final ElectricityMeterReadoutMapper readoutMapper) {
+    public ElectricityActualReadoutToDayTransformer(final ElectricityActualReadoutMapper readoutMapper) {
         this.readoutMapper = readoutMapper;
     }
 
@@ -52,11 +52,11 @@ public class ElectricityMeterReadoutToDayTransformer implements
      * {@inheritDoc}
      */
     @Override
-    public KeyValue<String, ElectricityMeterReadoutDto> transform(final String ignored, final ElectricityMeterReadoutDto value) {
+    public KeyValue<String, ElectricityActualReadoutDto> transform(final String ignored, final ElectricityActualReadoutDto value) {
         return new KeyValue<>(getKey(readoutMapper.map(value)), value);
     }
 
-    private String getKey(final ElectricityMeterReadout readout) {
+    private String getKey(final ElectricityActualReadout readout) {
         return DATE_FORMATTER.format(readout.getTimestamp());
     }
 

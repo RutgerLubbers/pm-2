@@ -1,8 +1,9 @@
-package nl.hoepsch.pm.electricity.actual;
+package nl.hoepsch.pm.electricity.actual.kafka;
 
 import nl.hoepsch.pm.dsmr.converter.TagValueExtractor;
 import nl.hoepsch.pm.dsmr.dto.DSMR5DatagramDto;
 import nl.hoepsch.pm.dsmr.model.DSMR5Datagram;
+import nl.hoepsch.pm.electricity.actual.ElectricityActualReadoutMapper;
 import nl.hoepsch.pm.electricity.actual.dto.ElectricityActualReadoutDto;
 import nl.hoepsch.pm.electricity.actual.model.ElectricityActualReadout;
 import nl.hoepsch.pm.kafka.DsmDatagramMapper;

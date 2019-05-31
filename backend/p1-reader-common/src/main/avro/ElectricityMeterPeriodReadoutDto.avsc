@@ -5,41 +5,11 @@
   "fields": [
     {
       "name": "start",
-      "type": {
-        "type": "record",
-        "name": "ElectricityMeterReadoutDto",
-        "fields": [
-          {
-            "name": "timestamp",
-            "type": [
-              "null",
-              "long"
-            ],
-            "logicalType": "timestamp-millis",
-            "default": null
-          },
-          {
-            "name": "deliveredToClientMeter1",
-            "type": "double"
-          },
-          {
-            "name": "deliveredToClientMeter2",
-            "type": "double"
-          },
-          {
-            "name": "deliveredByClientMeter1",
-            "type": "double"
-          },
-          {
-            "name": "deliveredByClientMeter2",
-            "type": "double"
-          }
-        ]
-      }
+      "type": "nl.hoepsch.pm.electricity.meter.dto.ElectricityMeterReadoutDto"
     },
     {
       "name": "end",
-      "type": "ElectricityMeterReadoutDto"
+      "type": "nl.hoepsch.pm.electricity.meter.dto.ElectricityMeterReadoutDto"
     }
   ]
 }

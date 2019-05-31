@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "ElectricityActualPeriodReadoutDto",
+  "namespace": "nl.hoepsch.pm.electricity.actual.dto",
+  "fields": [
+    {
+      "name": "values",
+      "type": {
+        "type": "array",
+        "items": "nl.hoepsch.pm.electricity.actual.dto.ElectricityActualReadoutDto",
+        "java-class": "java.util.List"
+      }
+    }
+  ]
+}
