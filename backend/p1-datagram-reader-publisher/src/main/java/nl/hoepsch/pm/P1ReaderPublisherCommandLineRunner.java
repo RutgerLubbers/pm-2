@@ -4,7 +4,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import nl.hoepsch.pm.dsmr.DatagramAcceptor;
 import nl.hoepsch.pm.dsmr.FileDatagramReader;
 import nl.hoepsch.pm.dsmr.KafkaDatagramAcceptor;
-import nl.hoepsch.pm.dsmr.SerialPortDatagramReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,29 +37,22 @@ public class P1ReaderPublisherCommandLineRunner implements CommandLineRunner {
     private final DatagramAcceptor datagramAcceptor;
 
     /**
-     * The serial port smart meter reader.
-     */
-    private final SerialPortDatagramReader serialPortDatagramReader;
-
-    /**
      * Path for stored, older, P1 datagrams.
      */
-    @Value("${datagram-store}")
+    @Value("${datagram-store.historical}")
     private String datagramStore;
 
     /**
      * The constructor.
      *
-     * @param fileDatagramReader       The file reader.
-     * @param datagramAcceptor         The datagram acceptor.
-     * @param serialPortDatagramReader The serial port smart meter reader.
+     * @param fileDatagramReader The file reader.
+     * @param datagramAcceptor   The datagram acceptor.
      */
     @Autowired
     public P1ReaderPublisherCommandLineRunner(final FileDatagramReader fileDatagramReader,
-        final KafkaDatagramAcceptor datagramAcceptor, final SerialPortDatagramReader serialPortDatagramReader) {
+        final KafkaDatagramAcceptor datagramAcceptor) {
         this.fileDatagramReader = fileDatagramReader;
         this.datagramAcceptor = datagramAcceptor;
-        this.serialPortDatagramReader = serialPortDatagramReader;
     }
 
     /**
@@ -70,12 +62,6 @@ public class P1ReaderPublisherCommandLineRunner implements CommandLineRunner {
     @Override
     public void run(final String... args) {
         LOGGER.info("Started P1 Reader Publisher App.");
-
-        try {
-            serialPortDatagramReader.consume();
-        } catch (InterruptedException e) {
-            LOGGER.info("Got interrupted.", e);
-        }
 
         if (pathExists(datagramStore)) {
             LOGGER.info("Reading stored datagrams from '{}'.", datagramStore);

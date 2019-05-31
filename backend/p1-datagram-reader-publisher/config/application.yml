@@ -1,25 +1,28 @@
 logging:
-    level:
-        org.springframework: INFO
+  level:
+    org.springframework: INFO
 
-        nl.hoepsch: DEBUG
-        nl.hoepsch.pm.kafka.receiver: INFO
+    nl.hoepsch: DEBUG
 
-    pattern:
-        console: "%white(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) [%blue(%X{tx.id}) %white(%X{task.id})] %white([%thread]) %cyan(%logger:%line) - %msg%n"
+  pattern:
+    console: "%white(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) [%blue(%X{tx.id}) %white(%X{task.id})] %white([%thread]) %cyan(%logger:%line) - %msg%n"
 
 serial-port: /dev/ttyUSB0
 
 # datagram-store: /Users/tapir/power-meter-2/p1-reader-hack/zip
-datagram-store: /Users/tapir/power-meter-2/data/one-zip
+datagram-store:
+  # The old records, to read.
+  historical: /Users/tapir/power-meter-2/data/one-zip
+  # The new records, to write.
+  current: .
 
 #
 # See https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 #
 spring:
-    kafka:
-        bootstrap-servers: localhost:19092,localhost:29092,localhost:39092
-        schema:
-            registry:
-                url: http://localhost:19091
-                initial-capacity: 100
+  kafka:
+    bootstrap-servers: localhost:19092,localhost:29092,localhost:39092
+    schema:
+      registry:
+        url: http://localhost:19091
+        initial-capacity: 100

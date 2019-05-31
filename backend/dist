@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+TARGET="odroid:p1-reader/"
+READER="p1-datagram-reader-publisher"
+scp -r ${READER}/build/libs/p1-datagram-reader-publisher.jar ${TARGET}
+scp -r ${READER}/config ${TARGET}

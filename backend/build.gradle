@@ -98,7 +98,7 @@ configure(allprojects) { project ->
         // </Spring Context>
 
         // <Commons>
-        compileOnly "org.apache.commons:commons-lang3:${commonsLangVersion}"
+        compile "org.apache.commons:commons-lang3:${commonsLangVersion}"
         // </Commons>
 
         // <Logback>
