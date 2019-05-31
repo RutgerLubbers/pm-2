@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 /**
@@ -41,6 +42,9 @@ public class P1ReaderPublisherCommandLineRunner implements CommandLineRunner {
      */
     private final SerialPortDatagramReader serialPortDatagramReader;
 
+    /**
+     * Path for stored, older, P1 datagrams.
+     */
     @Value("${datagram-store}")
     private String datagramStore;
 
@@ -82,7 +86,7 @@ public class P1ReaderPublisherCommandLineRunner implements CommandLineRunner {
     }
 
     private boolean pathExists(final String path) {
-        return Paths.get(path).toFile().exists();
+        return Files.exists(Paths.get(path));
     }
 
 }
